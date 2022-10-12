@@ -582,9 +582,11 @@ for!
 
 **Research Question 1:**
 
-*Summarizing: task 2* First I want to find out if any combination of
-fire-related facilities is rare or if any two are highly-correlated so
-that I can eliminate them for the subsequent analysis.
+*Summarizing: task 2*
+
+First I want to find out if any combination of fire-related facilities
+is rare or if any two are highly-correlated so that I can eliminate them
+for the subsequent analysis.
 
 ``` r
 apt_buildings %>%
@@ -633,8 +635,10 @@ become dominant since around 1960.
 
 **Research Question 2:**
 
-*Summarizing: task 4* I want to find out the relationship between number
-of floors and different combination of fire-related facilities.
+*Summarizing: task 4*
+
+I want to find out the relationship between number of floors and
+different combination of fire-related facilities.
 
 ``` r
 apt_buildings %>%
@@ -663,8 +667,10 @@ apt_buildings %>%
     ## 8 YES                  YES              YES                    7       3      51
     ## # … with abbreviated variable names ¹​storeys_median, ²​storeys_min, ³​storeys_max
 
-*Graphing: task 7* I want to know the distribution of number of floors
-of buildings with or without sprinkler system.
+*Graphing: task 7*
+
+I want to know the distribution of number of floors of buildings with or
+without sprinkler system.
 
 ``` r
 apt_buildings %>%
@@ -686,8 +692,10 @@ necessary.
 
 **Research Question 3:**
 
-*Summarizing: task 2* I want to compute the number of buildings with and
-without barrier free accessibility entry after 2000.
+*Summarizing: task 2*
+
+I want to compute the number of buildings with and without barrier free
+accessibility entry after 2000.
 
 ``` r
 apt_buildings %>%
@@ -730,9 +738,10 @@ buildings since 1970s.
 
 **Research Question 4:**
 
-*Summarizing: task 3* Since this question involves three numeric data, I
-want to convert one of them into categorical data so that it is easier
-to plot the data.
+*Summarizing: task 3*
+
+Since this question involves three numeric data, I want to convert one
+of them into categorical data so that it is easier to plot the data.
 
 ``` r
 apt_buildings_with_age <- apt_buildings_with_upf %>%
@@ -770,8 +779,10 @@ apt_buildings_with_age
 As seen above, year_built is limited to the most recent 30 years and
 then categorized into three categories each contains 10 years of period.
 
-*Graphing: task 7* Then I want to know the relationship between number
-of floors and number of units per floor in different time period.
+*Graphing: task 7*
+
+Then I want to know the relationship between number of floors and number
+of units per floor in different time period.
 
 ``` r
 ggplot(apt_buildings_with_age, aes(no_of_storeys, avg_no_of_units_per_floor)) +

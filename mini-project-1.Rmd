@@ -262,6 +262,7 @@ Make sure it's clear what research question you are doing each operation for!
 **Research Question 1:**
 
 *Summarizing: task 2*
+
 First I want to find out if any combination of fire-related facilities is rare or if any two are highly-correlated so that I can eliminate them for the subsequent analysis.
 ```{r}
 apt_buildings %>%
@@ -287,6 +288,7 @@ From the graph above, we can see that buildings with sprinkler system become dom
 **Research Question 2:**
 
 *Summarizing: task 4*
+
 I want to find out the relationship between number of floors and different combination of fire-related facilities.
 ```{r}
 apt_buildings %>%
@@ -299,6 +301,7 @@ apt_buildings %>%
 ```
 
 *Graphing: task 7*
+
 I want to know the distribution of number of floors of buildings with or without sprinkler system.
 
 ```{r}
@@ -317,6 +320,7 @@ It seems like when the building is taller, sprinkler system is more necessary.
 **Research Question 3:**
 
 *Summarizing: task 2*
+
 I want to compute the number of buildings with and without barrier free accessibility entry after 2000.
 ```{r}
 apt_buildings %>%
@@ -344,6 +348,7 @@ We can see that barrier-free accessibilty entry became a standard in new buildin
 **Research Question 4:**
 
 *Summarizing: task 3*
+
 Since this question involves three numeric data, I want to convert one of them into categorical data so that it is easier to plot the data.
 ```{r}
 apt_buildings_with_age <- apt_buildings_with_upf %>%
@@ -359,6 +364,7 @@ apt_buildings_with_age
 As seen above, year_built is limited to the most recent 30 years and then categorized into three categories each contains 10 years of period.
 
 *Graphing: task 7*
+
 Then I want to know the relationship between number of floors and number of units per floor in different time period.
 ```{r}
 ggplot(apt_buildings_with_age, aes(no_of_storeys, avg_no_of_units_per_floor)) +
