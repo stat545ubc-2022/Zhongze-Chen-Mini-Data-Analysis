@@ -1,6 +1,6 @@
 ---
 title: "Mini Data Analysis Milestone 2"
-output: html_document
+output: github_document
 ---
 
 *To complete this milestone, you can edit [this `.rmd` file](https://raw.githubusercontent.com/UBC-STAT/stat545.stat.ubc.ca/master/content/mini-project/mini-project-2.Rmd) directly. Fill in the sections that are commented out with `<!--- start your work here--->`. When you are done, make sure to knit to an `.md` file by changing the output in the YAML header to `github_document`, before submitting a tagged release on canvas.*
@@ -61,6 +61,13 @@ A reminder of the definition of *tidy* data:
 Based on the definition above, can you identify if your data is tidy or untidy? Go through all your columns, or if you have \>8 variables, just pick 8, and explain whether the data is untidy or tidy.
 
 <!--------------------------- Start your work below --------------------------->
+```{r}
+apt_buildings_select8 <- select(apt_buildings, c("id", "exterior_fire_escape",
+ "fire_alarm", "sprinkler_system", "emergency_power", "no_of_storeys",
+ "year_built", "barrier_free_accessibilty_entr"))
+```
+
+The data is not tidy. `exterior_fire_escape`, `fire_alarm`, `sprinkler_system`, `emergency_power` and `barrier_free_accessibilty_entr` are facilities of a building and therefore can be tidied into a single column.
 
 <!----------------------------------------------------------------------------->
 
@@ -74,6 +81,24 @@ Be sure to explain your reasoning for this task. Show us the "before" and "after
 
 <!--------------------------- Start your work below --------------------------->
 
+Before:
+```{r}
+head(apt_buildings_select8)
+```
+
+Tidy:
+```{r}
+apt_buildings_select8_tidy <- apt_buildings_select8 %>%
+ pivot_longer(cols = c(-id, -no_of_storeys, -year_built),
+               names_to  = "facilities",
+               values_to = "equipped")
+```
+
+After:
+```{r}
+head(apt_buildings_select8_tidy)
+```
+
 <!----------------------------------------------------------------------------->
 
 ### 2.3 (7.5 points)
@@ -82,8 +107,8 @@ Now, you should be more familiar with your data, and also have made progress in 
 
 <!-------------------------- Start your work below ---------------------------->
 
-1.  *FILL_THIS_IN*
-2.  *FILL_THIS_IN*
+1.  when do fire-related facilities (exterior_fire_escape, fire_alarm, sprinkler_system, emergency_power) become popular among buildings. (i.e. relationship between facilities and year built)
+2.  How does no_of_storeys affect the choices of building facilities.
 
 <!----------------------------------------------------------------------------->
 
@@ -97,6 +122,35 @@ Now, try to choose a version of your data that you think will be appropriate to 
 
 <!--------------------------- Start your work below --------------------------->
 
+```{r}
+apt_buildings_ver1 <- apt_buildings %>%
+    select(id, year_built, exterior_fire_escape, fire_alarm, sprinkler_system, emergency_power) %>%
+    drop_na(id, year_built, exterior_fire_escape, fire_alarm, sprinkler_system, emergency_power) %>%
+    filter(year_built >= 1950) %>%
+    pivot_longer(
+        cols = c(-id, -year_built),
+        names_to = "facilities",
+        values_to = "equipped"
+    ) %>%
+    group_by(year_built, facilities) %>%
+    summarise(coverage = sum(equipped == "YES") / n())
+head(apt_buildings_ver1)
+
+apt_buildings_ver2 <- apt_buildings %>%
+    select(id, year_built, no_of_storeys, exterior_fire_escape, fire_alarm, sprinkler_system, emergency_power) %>%
+    drop_na(id, year_built, no_of_storeys, exterior_fire_escape, fire_alarm, sprinkler_system, emergency_power) %>%
+    filter(year_built >= 1990) %>%
+    select(-year_built) %>%
+    pivot_longer(
+        cols = c(-id, -no_of_storeys),
+        names_to = "facilities",
+        values_to = "equipped"
+    ) %>%
+    group_by(no_of_storeys, facilities) %>%
+    summarise(coverage = sum(equipped == "YES") / n())
+head(apt_buildings_ver2)
+```
+
 <!----------------------------------------------------------------------------->
 
 # Task 2: Special Data Types (10)
@@ -106,6 +160,28 @@ For this exercise, you'll be choosing two of the three tasks below -- both tasks
 But first, tasks 1 and 2 below ask you to modify a plot you made in a previous milestone. The plot you choose should involve plotting across at least three groups (whether by facetting, or using an aesthetic like colour). Place this plot below (you're allowed to modify the plot if you'd like). If you don't have such a plot, you'll need to make one. Place the code for your plot below.
 
 <!-------------------------- Start your work below ---------------------------->
+
+I don't have such a plot, I will create a new plot as shown below:
+
+```{r}
+apt_buildings_select8_tidy %>%
+    drop_na(year_built) %>%
+    filter(year_built >= 1900, equipped == "YES") %>%
+    mutate(age =
+           case_when(
+                year_built >= 2010 ~ "2010s",
+                year_built >= 2000 ~ "2000s",
+                year_built >= 1990 ~ "1990s",
+                year_built >= 1980 ~ "1980s",
+                year_built >= 1970 ~ "1970s",
+                year_built >= 1960 ~ "1960s",
+                year_built >= 1950 ~ "1950s",
+                TRUE ~ "Before 1950")) %>%
+    ggplot(aes(x = age, fill = facilities)) +
+    geom_bar() +
+    theme_minimal() +
+    theme_bw()
+```
 
 <!----------------------------------------------------------------------------->
 
@@ -128,13 +204,59 @@ Now, choose two of the following tasks.
 
 <!-------------------------- Start your work below ---------------------------->
 
-**Task Number**: FILL_THIS_IN
+**Task Number**: 1
+
+In this task, I reorder the age factor. The x-axis of the plot is age, or time and should be in chronological order. However, `Before 1950` bar is put after `2010s`, which violate the ordering. Therefore, we need to reorder the factor based on the incresing order of year built to make the early age appear first.
+
+```{r}
+apt_buildings_select8_tidy %>%
+    drop_na(year_built) %>%
+    filter(year_built >= 1900, equipped == "YES") %>%
+    mutate(age =
+           case_when(
+                year_built >= 2010 ~ "2010s",
+                year_built >= 2000 ~ "2000s",
+                year_built >= 1990 ~ "1990s",
+                year_built >= 1980 ~ "1980s",
+                year_built >= 1970 ~ "1970s",
+                year_built >= 1960 ~ "1960s",
+                year_built >= 1950 ~ "1950s",
+                TRUE ~ "Before 1950")) %>%
+    ggplot(aes(x = fct_reorder(age, year_built), fill = facilities)) +
+    geom_bar() +
+    xlab("Age") +
+    theme_minimal() +
+    theme_bw()
+```
 
 <!----------------------------------------------------------------------------->
 
 <!-------------------------- Start your work below ---------------------------->
 
-**Task Number**: FILL_THIS_IN
+**Task Number**: 2
+
+In this task, I group some of the levels in age factor. From the plots before we can see that 2000s and 2010s have relatively fewer observations, therefore it makes sense to combine both `2000s` and `2010s` levels into a single level `After 2000`.
+
+```{r}
+apt_buildings_select8_tidy %>%
+    drop_na(year_built) %>%
+    filter(year_built >= 1900, equipped == "YES") %>%
+    mutate(age =
+           case_when(
+                year_built >= 2010 ~ "2010s",
+                year_built >= 2000 ~ "2000s",
+                year_built >= 1990 ~ "1990s",
+                year_built >= 1980 ~ "1980s",
+                year_built >= 1970 ~ "1970s",
+                year_built >= 1960 ~ "1960s",
+                year_built >= 1950 ~ "1950s",
+                TRUE ~ "Before 1950")) %>%
+    ggplot(aes(x = fct_reorder(fct_collapse(age, "After 2000" = c("2000s", "2010s")), year_built), fill = facilities)) +
+    geom_bar() +
+    xlab("Age") +
+    theme_minimal() +
+    theme_bw()
+```
 
 <!----------------------------------------------------------------------------->
 
@@ -146,9 +268,9 @@ Pick a research question, and pick a variable of interest (we'll call it "Y") th
 
 <!-------------------------- Start your work below ---------------------------->
 
-**Research Question**: FILL_THIS_IN
+**Research Question**: when do fire-related facilities (exterior_fire_escape, fire_alarm, sprinkler_system, emergency_power) become popular among buildings. (i.e. relationship between facilities and year built)
 
-**Variable of interest**: FILL_THIS_IN
+**Variable of interest**: sprinkler_system
 
 <!----------------------------------------------------------------------------->
 
