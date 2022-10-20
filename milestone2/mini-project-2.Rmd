@@ -67,7 +67,7 @@ apt_buildings_select8 <- select(apt_buildings, c("id", "exterior_fire_escape",
  "year_built", "barrier_free_accessibilty_entr"))
 ```
 
-The data is not tidy. `exterior_fire_escape`, `fire_alarm`, `sprinkler_system`, `emergency_power` and `barrier_free_accessibilty_entr` are facilities of a building and therefore can be tidied into a single column.
+The data is not tidy. `exterior_fire_escape`, `fire_alarm`, `sprinkler_system`, `emergency_power` and `barrier_free_accessibilty_entr` are facilities of a building (values) and therefore can be tidied into a single column (variable).
 
 <!----------------------------------------------------------------------------->
 
@@ -85,6 +85,8 @@ Before:
 ```{r}
 head(apt_buildings_select8)
 ```
+
+Before, the dataset has multiple values of facilities as column. Therefore, I tidied the data to have a single `facilities` column, where each value is a facility.
 
 Tidy:
 ```{r}
@@ -115,6 +117,8 @@ Now, you should be more familiar with your data, and also have made progress in 
 Explain your decision for choosing the above two research questions.
 
 <!--------------------------- Start your work below --------------------------->
+
+When we tidy the data to have a `facilities` column, it is easy to count how many buildings have a specific facility in a given year, therefore we can easily analyze its popularity over the year. Thus, I chose two research questions related to the facilities of the buildings.
 
 <!----------------------------------------------------------------------------->
 
