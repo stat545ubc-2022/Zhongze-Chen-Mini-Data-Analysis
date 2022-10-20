@@ -1,0 +1,260 @@
+Var1,Var2,Freq
+,      id,Min.   :10359  
+,      id,1st Qu.:11222  
+,      id,Median :12086  
+,      id,Mean   :12086  
+,      id,3rd Qu.:12950  
+,      id,Max.   :13813  
+,      id,NA
+,air_conditioning,Length:3455       
+,air_conditioning,Class :character  
+,air_conditioning,Mode  :character  
+,air_conditioning,NA
+,air_conditioning,NA
+,air_conditioning,NA
+,air_conditioning,NA
+, amenities,Length:3455       
+, amenities,Class :character  
+, amenities,Mode  :character  
+, amenities,NA
+, amenities,NA
+, amenities,NA
+, amenities,NA
+, balconies,Length:3455       
+, balconies,Class :character  
+, balconies,Mode  :character  
+, balconies,NA
+, balconies,NA
+, balconies,NA
+, balconies,NA
+,barrier_free_accessibilty_entr,Length:3455       
+,barrier_free_accessibilty_entr,Class :character  
+,barrier_free_accessibilty_entr,Mode  :character  
+,barrier_free_accessibilty_entr,NA
+,barrier_free_accessibilty_entr,NA
+,barrier_free_accessibilty_entr,NA
+,barrier_free_accessibilty_entr,NA
+,bike_parking,Length:3455       
+,bike_parking,Class :character  
+,bike_parking,Mode  :character  
+,bike_parking,NA
+,bike_parking,NA
+,bike_parking,NA
+,bike_parking,NA
+,exterior_fire_escape,Length:3455       
+,exterior_fire_escape,Class :character  
+,exterior_fire_escape,Mode  :character  
+,exterior_fire_escape,NA
+,exterior_fire_escape,NA
+,exterior_fire_escape,NA
+,exterior_fire_escape,NA
+, fire_alarm,Length:3455       
+, fire_alarm,Class :character  
+, fire_alarm,Mode  :character  
+, fire_alarm,NA
+, fire_alarm,NA
+, fire_alarm,NA
+, fire_alarm,NA
+,garbage_chutes,Length:3455       
+,garbage_chutes,Class :character  
+,garbage_chutes,Mode  :character  
+,garbage_chutes,NA
+,garbage_chutes,NA
+,garbage_chutes,NA
+,garbage_chutes,NA
+,heating_type,Length:3455       
+,heating_type,Class :character  
+,heating_type,Mode  :character  
+,heating_type,NA
+,heating_type,NA
+,heating_type,NA
+,heating_type,NA
+,  intercom,Length:3455       
+,  intercom,Class :character  
+,  intercom,Mode  :character  
+,  intercom,NA
+,  intercom,NA
+,  intercom,NA
+,  intercom,NA
+,laundry_room,Length:3455       
+,laundry_room,Class :character  
+,laundry_room,Mode  :character  
+,laundry_room,NA
+,laundry_room,NA
+,laundry_room,NA
+,laundry_room,NA
+,locker_or_storage_room,Length:3455       
+,locker_or_storage_room,Class :character  
+,locker_or_storage_room,Mode  :character  
+,locker_or_storage_room,NA
+,locker_or_storage_room,NA
+,locker_or_storage_room,NA
+,locker_or_storage_room,NA
+,no_of_elevators,Min.   : 0.000  
+,no_of_elevators,1st Qu.: 0.000  
+,no_of_elevators,Median : 1.000  
+,no_of_elevators,Mean   : 1.208  
+,no_of_elevators,3rd Qu.: 2.000  
+,no_of_elevators,Max.   :32.000  
+,no_of_elevators,NA's   :5  
+,parking_type,Length:3455       
+,parking_type,Class :character  
+,parking_type,Mode  :character  
+,parking_type,NA
+,parking_type,NA
+,parking_type,NA
+,parking_type,NA
+,pets_allowed,Length:3455       
+,pets_allowed,Class :character  
+,pets_allowed,Mode  :character  
+,pets_allowed,NA
+,pets_allowed,NA
+,pets_allowed,NA
+,pets_allowed,NA
+,prop_management_company_name,Length:3455       
+,prop_management_company_name,Class :character  
+,prop_management_company_name,Mode  :character  
+,prop_management_company_name,NA
+,prop_management_company_name,NA
+,prop_management_company_name,NA
+,prop_management_company_name,NA
+,property_type,Length:3455       
+,property_type,Class :character  
+,property_type,Mode  :character  
+,property_type,NA
+,property_type,NA
+,property_type,NA
+,property_type,NA
+,     rsn,Min.   :4152554  
+,     rsn,1st Qu.:4153682  
+,     rsn,Median :4154598  
+,     rsn,Mean   :4167867  
+,     rsn,3rd Qu.:4155538  
+,     rsn,Max.   :4716349  
+,     rsn,NA
+,separate_gas_meters,Length:3455       
+,separate_gas_meters,Class :character  
+,separate_gas_meters,Mode  :character  
+,separate_gas_meters,NA
+,separate_gas_meters,NA
+,separate_gas_meters,NA
+,separate_gas_meters,NA
+,separate_hydro_meters,Length:3455       
+,separate_hydro_meters,Class :character  
+,separate_hydro_meters,Mode  :character  
+,separate_hydro_meters,NA
+,separate_hydro_meters,NA
+,separate_hydro_meters,NA
+,separate_hydro_meters,NA
+,separate_water_meters,Length:3455       
+,separate_water_meters,Class :character  
+,separate_water_meters,Mode  :character  
+,separate_water_meters,NA
+,separate_water_meters,NA
+,separate_water_meters,NA
+,separate_water_meters,NA
+,site_address,Length:3455       
+,site_address,Class :character  
+,site_address,Mode  :character  
+,site_address,NA
+,site_address,NA
+,site_address,NA
+,site_address,NA
+,sprinkler_system,Length:3455       
+,sprinkler_system,Class :character  
+,sprinkler_system,Mode  :character  
+,sprinkler_system,NA
+,sprinkler_system,NA
+,sprinkler_system,NA
+,sprinkler_system,NA
+,visitor_parking,Length:3455       
+,visitor_parking,Class :character  
+,visitor_parking,Mode  :character  
+,visitor_parking,NA
+,visitor_parking,NA
+,visitor_parking,NA
+,visitor_parking,NA
+,    ward,Length:3455       
+,    ward,Class :character  
+,    ward,Mode  :character  
+,    ward,NA
+,    ward,NA
+,    ward,NA
+,    ward,NA
+,window_type,Length:3455       
+,window_type,Class :character  
+,window_type,Mode  :character  
+,window_type,NA
+,window_type,NA
+,window_type,NA
+,window_type,NA
+,  year_built,Min.   :1805  
+,  year_built,1st Qu.:1955  
+,  year_built,Median :1962  
+,  year_built,Mean   :1962  
+,  year_built,3rd Qu.:1970  
+,  year_built,Max.   :2019  
+,  year_built,NA's   :13  
+,year_registered,Min.   :2017  
+,year_registered,1st Qu.:2017  
+,year_registered,Median :2017  
+,year_registered,Mean   :2017  
+,year_registered,3rd Qu.:2017  
+,year_registered,Max.   :2020  
+,year_registered,NA's   :89  
+,no_of_storeys,Min.   : 0.000  
+,no_of_storeys,1st Qu.: 3.000  
+,no_of_storeys,Median : 5.000  
+,no_of_storeys,Mean   : 7.738  
+,no_of_storeys,3rd Qu.:10.000  
+,no_of_storeys,Max.   :51.000  
+,no_of_storeys,NA
+,emergency_power,Length:3455       
+,emergency_power,Class :character  
+,emergency_power,Mode  :character  
+,emergency_power,NA
+,emergency_power,NA
+,emergency_power,NA
+,emergency_power,NA
+,non-smoking_building,Length:3455       
+,non-smoking_building,Class :character  
+,non-smoking_building,Mode  :character  
+,non-smoking_building,NA
+,non-smoking_building,NA
+,non-smoking_building,NA
+,non-smoking_building,NA
+, no_of_units,Min.   :   0.00  
+, no_of_units,1st Qu.:  25.00  
+, no_of_units,Median :  52.00  
+, no_of_units,Mean   :  91.09  
+, no_of_units,3rd Qu.: 124.00  
+, no_of_units,Max.   :4111.00  
+, no_of_units,NA
+,no_of_accessible_parking_spaces,Min.   :  0.000  
+,no_of_accessible_parking_spaces,1st Qu.:  0.000  
+,no_of_accessible_parking_spaces,Median :  1.000  
+,no_of_accessible_parking_spaces,Mean   :  6.559  
+,no_of_accessible_parking_spaces,3rd Qu.:  5.000  
+,no_of_accessible_parking_spaces,Max.   :340.000  
+,no_of_accessible_parking_spaces,NA's   :123  
+,facilities_available,Length:3455       
+,facilities_available,Class :character  
+,facilities_available,Mode  :character  
+,facilities_available,NA
+,facilities_available,NA
+,facilities_available,NA
+,facilities_available,NA
+,cooling_room,Length:3455       
+,cooling_room,Class :character  
+,cooling_room,Mode  :character  
+,cooling_room,NA
+,cooling_room,NA
+,cooling_room,NA
+,cooling_room,NA
+,no_barrier_free_accessible_units,Min.   :  0.000  
+,no_barrier_free_accessible_units,1st Qu.:  0.000  
+,no_barrier_free_accessible_units,Median :  0.000  
+,no_barrier_free_accessible_units,Mean   :  9.408  
+,no_barrier_free_accessible_units,3rd Qu.:  1.000  
+,no_barrier_free_accessible_units,Max.   :474.000  
+,no_barrier_free_accessible_units,NA's   :154  

@@ -1,0 +1,645 @@
+Mini Data Analysis Milestone 2
+================
+
+*To complete this milestone, you can edit [this `.rmd`
+file](https://raw.githubusercontent.com/UBC-STAT/stat545.stat.ubc.ca/master/content/mini-project/mini-project-2.Rmd)
+directly. Fill in the sections that are commented out with
+`<!--- start your work here--->`. When you are done, make sure to knit
+to an `.md` file by changing the output in the YAML header to
+`github_document`, before submitting a tagged release on canvas.*
+
+# Welcome to your second (and last) milestone in your mini data analysis project!
+
+In Milestone 1, you explored your data, came up with research questions,
+and obtained some results by making summary tables and graphs. This
+time, we will first explore more in depth the concept of *tidy data.*
+Then, you’ll be sharpening some of the results you obtained from your
+previous milestone by:
+
+- Manipulating special data types in R: factors and/or dates and times.
+- Fitting a model object to your data, and extract a result.
+- Reading and writing data as separate files.
+
+**NOTE**: The main purpose of the mini data analysis is to integrate
+what you learn in class in an analysis. Although each milestone provides
+a framework for you to conduct your analysis, it’s possible that you
+might find the instructions too rigid for your data set. If this is the
+case, you may deviate from the instructions – just make sure you’re
+demonstrating a wide range of tools and techniques taught in this class.
+
+# Instructions
+
+**To complete this milestone**, edit [this very `.Rmd`
+file](https://raw.githubusercontent.com/UBC-STAT/stat545.stat.ubc.ca/master/content/mini-project/mini-project-2.Rmd)
+directly. Fill in the sections that are tagged with
+`<!--- start your work here--->`.
+
+**To submit this milestone**, make sure to knit this `.Rmd` file to an
+`.md` file by changing the YAML output settings from
+`output: html_document` to `output: github_document`. Commit and push
+all of your work to your mini-analysis GitHub repository, and tag a
+release on GitHub. Then, submit a link to your tagged release on canvas.
+
+**Points**: This milestone is worth 55 points (compared to the 45 points
+of the Milestone 1): 45 for your analysis, and 10 for your entire
+mini-analysis GitHub repository. Details follow.
+
+**Research Questions**: In Milestone 1, you chose two research questions
+to focus on. Wherever realistic, your work in this milestone should
+relate to these research questions whenever we ask for justification
+behind your work. In the case that some tasks in this milestone don’t
+align well with one of your research questions, feel free to discuss
+your results in the context of a different research question.
+
+# Learning Objectives
+
+By the end of this milestone, you should:
+
+- Understand what *tidy* data is, and how to create it using `tidyr`.
+- Generate a reproducible and clear report using R Markdown.
+- Manipulating special data types in R: factors and/or dates and times.
+- Fitting a model object to your data, and extract a result.
+- Reading and writing data as separate files.
+
+# Setup
+
+Begin by loading your data and the tidyverse package below:
+
+``` r
+library(datateachr) # <- might contain the data you picked!
+library(tidyverse)
+```
+
+# Task 1: Tidy your data (15 points)
+
+In this task, we will do several exercises to reshape our data. The goal
+here is to understand how to do this reshaping with the `tidyr` package.
+
+A reminder of the definition of *tidy* data:
+
+- Each row is an **observation**
+- Each column is a **variable**
+- Each cell is a **value**
+
+*Tidy’ing* data is sometimes necessary because it can simplify
+computation. Other times it can be nice to organize data so that it can
+be easier to understand when read manually.
+
+### 2.1 (2.5 points)
+
+Based on the definition above, can you identify if your data is tidy or
+untidy? Go through all your columns, or if you have \>8 variables, just
+pick 8, and explain whether the data is untidy or tidy.
+
+<!--------------------------- Start your work below --------------------------->
+
+``` r
+apt_buildings_select8 <- select(apt_buildings, c("id", "exterior_fire_escape",
+ "fire_alarm", "sprinkler_system", "emergency_power", "no_of_storeys",
+ "year_built", "barrier_free_accessibilty_entr"))
+```
+
+The data is not tidy. `exterior_fire_escape`, `fire_alarm`,
+`sprinkler_system`, `emergency_power` and
+`barrier_free_accessibilty_entr` are facilities of a building and
+therefore can be tidied into a single column.
+
+<!----------------------------------------------------------------------------->
+
+### 2.2 (5 points)
+
+Now, if your data is tidy, untidy it! Then, tidy it back to it’s
+original state.
+
+If your data is untidy, then tidy it! Then, untidy it back to it’s
+original state.
+
+Be sure to explain your reasoning for this task. Show us the “before”
+and “after”.
+
+<!--------------------------- Start your work below --------------------------->
+
+Before:
+
+``` r
+head(apt_buildings_select8)
+```
+
+    ## # A tibble: 6 × 8
+    ##      id exterior_fire_escape fire_alarm sprink…¹ emerg…² no_of…³ year_…⁴ barri…⁵
+    ##   <dbl> <chr>                <chr>      <chr>    <chr>     <dbl>   <dbl> <chr>  
+    ## 1 10359 NO                   YES        YES      NO           17    1967 YES    
+    ## 2 10360 NO                   YES        YES      YES          14    1970 NO     
+    ## 3 10361 NO                   YES        NO       NO            4    1927 NO     
+    ## 4 10362 YES                  YES        YES      NO            5    1959 YES    
+    ## 5 10363 NO                   YES        NO       NO            4    1943 NO     
+    ## 6 10364 <NA>                 YES        NO       NO            4    1952 NO     
+    ## # … with abbreviated variable names ¹​sprinkler_system, ²​emergency_power,
+    ## #   ³​no_of_storeys, ⁴​year_built, ⁵​barrier_free_accessibilty_entr
+
+Tidy:
+
+``` r
+apt_buildings_select8_tidy <- apt_buildings_select8 %>%
+ pivot_longer(cols = c(-id, -no_of_storeys, -year_built),
+               names_to  = "facilities",
+               values_to = "equipped")
+```
+
+After:
+
+``` r
+head(apt_buildings_select8_tidy)
+```
+
+    ## # A tibble: 6 × 5
+    ##      id no_of_storeys year_built facilities                     equipped
+    ##   <dbl>         <dbl>      <dbl> <chr>                          <chr>   
+    ## 1 10359            17       1967 exterior_fire_escape           NO      
+    ## 2 10359            17       1967 fire_alarm                     YES     
+    ## 3 10359            17       1967 sprinkler_system               YES     
+    ## 4 10359            17       1967 emergency_power                NO      
+    ## 5 10359            17       1967 barrier_free_accessibilty_entr YES     
+    ## 6 10360            14       1970 exterior_fire_escape           NO
+
+<!----------------------------------------------------------------------------->
+
+### 2.3 (7.5 points)
+
+Now, you should be more familiar with your data, and also have made
+progress in answering your research questions. Based on your interest,
+and your analyses, pick 2 of the 4 research questions to continue your
+analysis in the next four tasks:
+
+<!-------------------------- Start your work below ---------------------------->
+
+1.  when do fire-related facilities (exterior_fire_escape, fire_alarm,
+    sprinkler_system, emergency_power) become popular among buildings.
+    (i.e. relationship between facilities and year built)
+2.  How does no_of_storeys affect the choices of building facilities.
+
+<!----------------------------------------------------------------------------->
+
+Explain your decision for choosing the above two research questions.
+
+<!--------------------------- Start your work below --------------------------->
+<!----------------------------------------------------------------------------->
+
+Now, try to choose a version of your data that you think will be
+appropriate to answer these 2 questions. Use between 4 and 8 functions
+that we’ve covered so far (i.e. by filtering, cleaning, tidy’ing,
+dropping irrelevant columns, etc.).
+
+<!--------------------------- Start your work below --------------------------->
+
+``` r
+apt_buildings_ver1 <- apt_buildings %>%
+    select(id, year_built, exterior_fire_escape, fire_alarm, sprinkler_system, emergency_power) %>%
+    drop_na(id, year_built, exterior_fire_escape, fire_alarm, sprinkler_system, emergency_power) %>%
+    filter(year_built >= 1950) %>%
+    pivot_longer(
+        cols = c(-id, -year_built),
+        names_to = "facilities",
+        values_to = "equipped"
+    ) %>%
+    group_by(year_built, facilities) %>%
+    summarise(coverage = sum(equipped == "YES") / n())
+```
+
+    ## `summarise()` has grouped output by 'year_built'. You can override using the
+    ## `.groups` argument.
+
+``` r
+head(apt_buildings_ver1)
+```
+
+    ## # A tibble: 6 × 3
+    ## # Groups:   year_built [2]
+    ##   year_built facilities           coverage
+    ##        <dbl> <chr>                   <dbl>
+    ## 1       1950 emergency_power        0.260 
+    ## 2       1950 exterior_fire_escape   0.252 
+    ## 3       1950 fire_alarm             0.992 
+    ## 4       1950 sprinkler_system       0.417 
+    ## 5       1951 emergency_power        0.0476
+    ## 6       1951 exterior_fire_escape   0.238
+
+``` r
+apt_buildings_ver2 <- apt_buildings %>%
+    select(id, year_built, no_of_storeys, exterior_fire_escape, fire_alarm, sprinkler_system, emergency_power) %>%
+    drop_na(id, year_built, no_of_storeys, exterior_fire_escape, fire_alarm, sprinkler_system, emergency_power) %>%
+    filter(year_built >= 1990) %>%
+    select(-year_built) %>%
+    pivot_longer(
+        cols = c(-id, -no_of_storeys),
+        names_to = "facilities",
+        values_to = "equipped"
+    ) %>%
+    group_by(no_of_storeys, facilities) %>%
+    summarise(coverage = sum(equipped == "YES") / n())
+```
+
+    ## `summarise()` has grouped output by 'no_of_storeys'. You can override using the
+    ## `.groups` argument.
+
+``` r
+head(apt_buildings_ver2)
+```
+
+    ## # A tibble: 6 × 3
+    ## # Groups:   no_of_storeys [2]
+    ##   no_of_storeys facilities           coverage
+    ##           <dbl> <chr>                   <dbl>
+    ## 1             3 emergency_power         0.161
+    ## 2             3 exterior_fire_escape    0.226
+    ## 3             3 fire_alarm              1    
+    ## 4             3 sprinkler_system        0.484
+    ## 5             4 emergency_power         0.45 
+    ## 6             4 exterior_fire_escape    0.075
+
+<!----------------------------------------------------------------------------->
+
+# Task 2: Special Data Types (10)
+
+For this exercise, you’ll be choosing two of the three tasks below –
+both tasks that you choose are worth 5 points each.
+
+But first, tasks 1 and 2 below ask you to modify a plot you made in a
+previous milestone. The plot you choose should involve plotting across
+at least three groups (whether by facetting, or using an aesthetic like
+colour). Place this plot below (you’re allowed to modify the plot if
+you’d like). If you don’t have such a plot, you’ll need to make one.
+Place the code for your plot below.
+
+<!-------------------------- Start your work below ---------------------------->
+
+I don’t have such a plot, I will create a new plot as shown below:
+
+``` r
+apt_buildings_select8_tidy %>%
+    drop_na(year_built) %>%
+    filter(year_built >= 1900, equipped == "YES") %>%
+    mutate(age =
+           case_when(
+                year_built >= 2010 ~ "2010s",
+                year_built >= 2000 ~ "2000s",
+                year_built >= 1990 ~ "1990s",
+                year_built >= 1980 ~ "1980s",
+                year_built >= 1970 ~ "1970s",
+                year_built >= 1960 ~ "1960s",
+                year_built >= 1950 ~ "1950s",
+                TRUE ~ "Before 1950")) %>%
+    ggplot(aes(x = age, fill = facilities)) +
+    geom_bar() +
+    theme_minimal() +
+    theme_bw()
+```
+
+![](mini-project-2_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
+
+<!----------------------------------------------------------------------------->
+
+Now, choose two of the following tasks.
+
+1.  Produce a new plot that reorders a factor in your original plot,
+    using the `forcats` package (3 points). Then, in a sentence or two,
+    briefly explain why you chose this ordering (1 point here for
+    demonstrating understanding of the reordering, and 1 point for
+    demonstrating some justification for the reordering, which could be
+    subtle or speculative.)
+
+2.  Produce a new plot that groups some factor levels together into an
+    “other” category (or something similar), using the `forcats` package
+    (3 points). Then, in a sentence or two, briefly explain why you
+    chose this grouping (1 point here for demonstrating understanding of
+    the grouping, and 1 point for demonstrating some justification for
+    the grouping, which could be subtle or speculative.)
+
+3.  If your data has some sort of time-based column like a date (but
+    something more granular than just a year):
+
+    1.  Make a new column that uses a function from the `lubridate` or
+        `tsibble` package to modify your original time-based column. (3
+        points)
+
+        - Note that you might first have to *make* a time-based column
+          using a function like `ymd()`, but this doesn’t count.
+        - Examples of something you might do here: extract the day of
+          the year from a date, or extract the weekday, or let 24 hours
+          elapse on your dates.
+
+    2.  Then, in a sentence or two, explain how your new column might be
+        useful in exploring a research question. (1 point for
+        demonstrating understanding of the function you used, and 1
+        point for your justification, which could be subtle or
+        speculative).
+
+        - For example, you could say something like “Investigating the
+          day of the week might be insightful because penguins don’t
+          work on weekends, and so may respond differently”.
+
+<!-------------------------- Start your work below ---------------------------->
+
+**Task Number**: 1
+
+In this task, I reorder the age factor. The x-axis of the plot is age,
+or time and should be in chronological order. However, `Before 1950` bar
+is put after `2010s`, which violate the ordering. Therefore, we need to
+reorder the factor based on the incresing order of year built to make
+the early age appear first.
+
+``` r
+apt_buildings_select8_tidy %>%
+    drop_na(year_built) %>%
+    filter(year_built >= 1900, equipped == "YES") %>%
+    mutate(age =
+           case_when(
+                year_built >= 2010 ~ "2010s",
+                year_built >= 2000 ~ "2000s",
+                year_built >= 1990 ~ "1990s",
+                year_built >= 1980 ~ "1980s",
+                year_built >= 1970 ~ "1970s",
+                year_built >= 1960 ~ "1960s",
+                year_built >= 1950 ~ "1950s",
+                TRUE ~ "Before 1950")) %>%
+    ggplot(aes(x = fct_reorder(age, year_built), fill = facilities)) +
+    geom_bar() +
+    xlab("Age") +
+    theme_minimal() +
+    theme_bw()
+```
+
+![](mini-project-2_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
+
+<!----------------------------------------------------------------------------->
+<!-------------------------- Start your work below ---------------------------->
+
+**Task Number**: 2
+
+In this task, I group some of the levels in age factor. From the plots
+before we can see that 2000s and 2010s have relatively fewer
+observations, therefore it makes sense to combine both `2000s` and
+`2010s` levels into a single level `After 2000`.
+
+``` r
+apt_buildings_select8_tidy %>%
+    drop_na(year_built) %>%
+    filter(year_built >= 1900, equipped == "YES") %>%
+    mutate(age =
+           case_when(
+                year_built >= 2010 ~ "2010s",
+                year_built >= 2000 ~ "2000s",
+                year_built >= 1990 ~ "1990s",
+                year_built >= 1980 ~ "1980s",
+                year_built >= 1970 ~ "1970s",
+                year_built >= 1960 ~ "1960s",
+                year_built >= 1950 ~ "1950s",
+                TRUE ~ "Before 1950")) %>%
+    ggplot(aes(x = fct_reorder(fct_collapse(age, "After 2000" = c("2000s", "2010s")), year_built), fill = facilities)) +
+    geom_bar() +
+    xlab("Age") +
+    theme_minimal() +
+    theme_bw()
+```
+
+![](mini-project-2_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
+
+<!----------------------------------------------------------------------------->
+
+# Task 3: Modelling
+
+## 2.0 (no points)
+
+Pick a research question, and pick a variable of interest (we’ll call it
+“Y”) that’s relevant to the research question. Indicate these.
+
+<!-------------------------- Start your work below ---------------------------->
+
+**Research Question**: when do fire-related facilities
+(exterior_fire_escape, fire_alarm, sprinkler_system, emergency_power)
+become popular among buildings. (i.e. relationship between facilities
+and year built)
+
+**Variable of interest**: sprinkler_system
+
+<!----------------------------------------------------------------------------->
+
+## 2.1 (5 points)
+
+Fit a model or run a hypothesis test that provides insight on this
+variable with respect to the research question. Store the model object
+as a variable, and print its output to screen. We’ll omit having to
+justify your choice, because we don’t expect you to know about model
+specifics in STAT 545.
+
+- **Note**: It’s OK if you don’t know how these models/tests work. Here
+  are some examples of things you can do here, but the sky’s the limit.
+
+  - You could fit a model that makes predictions on Y using another
+    variable, by using the `lm()` function.
+  - You could test whether the mean of Y equals 0 using `t.test()`, or
+    maybe the mean across two groups are different using `t.test()`, or
+    maybe the mean across multiple groups are different using `anova()`
+    (you may have to pivot your data for the latter two).
+  - You could use `lm()` to test for significance of regression.
+
+<!-------------------------- Start your work below ---------------------------->
+
+I chose to fit the model that predicts emergency power coverage based on
+the year built.
+
+``` r
+apt_buildings_sprinkler <- filter(apt_buildings_ver1, facilities == "emergency_power")
+model <- lm(coverage ~ I(year_built - 1950), apt_buildings_sprinkler)
+model
+```
+
+    ## 
+    ## Call:
+    ## lm(formula = coverage ~ I(year_built - 1950), data = apt_buildings_sprinkler)
+    ## 
+    ## Coefficients:
+    ##          (Intercept)  I(year_built - 1950)  
+    ##             0.328552              0.009175
+
+<!----------------------------------------------------------------------------->
+
+## 2.2 (5 points)
+
+Produce something relevant from your fitted model: either predictions on
+Y, or a single value like a regression coefficient or a p-value.
+
+- Be sure to indicate in writing what you chose to produce.
+- Your code should either output a tibble (in which case you should
+  indicate the column that contains the thing you’re looking for), or
+  the thing you’re looking for itself.
+- Obtain your results using the `broom` package if possible. If your
+  model is not compatible with the broom function you’re needing, then
+  you can obtain your results by some other means, but first indicate
+  which broom function is not compatible.
+
+<!-------------------------- Start your work below ---------------------------->
+
+I chose to produce predictions on emergency power based on the year.
+
+``` r
+broom::augment(model)
+```
+
+    ## # A tibble: 69 × 7
+    ##    coverage `I(year_built - 1950)` .fitted   .hat .sigma  .cooksd .std.resid
+    ##       <dbl>               <I<dbl>>   <dbl>  <dbl>  <dbl>    <dbl>      <dbl>
+    ##  1   0.260                       0   0.329 0.0559  0.213 0.00331      -0.334
+    ##  2   0.0476                      1   0.338 0.0536  0.210 0.0562       -1.41 
+    ##  3   0.0678                      2   0.347 0.0512  0.210 0.0495       -1.35 
+    ##  4   0.192                       3   0.356 0.0490  0.212 0.0162       -0.794
+    ##  5   0.325                       4   0.365 0.0468  0.213 0.000919     -0.193
+    ##  6   0.179                       5   0.374 0.0447  0.212 0.0210       -0.947
+    ##  7   0.313                       6   0.384 0.0427  0.213 0.00256      -0.339
+    ##  8   0.232                       7   0.393 0.0408  0.212 0.0127       -0.774
+    ##  9   0.204                       8   0.402 0.0389  0.212 0.0185       -0.956
+    ## 10   0.263                       9   0.411 0.0370  0.212 0.00984      -0.715
+    ## # … with 59 more rows
+
+<!----------------------------------------------------------------------------->
+
+# Task 4: Reading and writing data
+
+Get set up for this exercise by making a folder called `output` in the
+top level of your project folder / repository. You’ll be saving things
+there.
+
+## 3.1 (5 points)
+
+Take a summary table that you made from Milestone 1 (Task 4.2), and
+write it as a csv file in your `output` folder. Use the `here::here()`
+function.
+
+- **Robustness criteria**: You should be able to move your Mini Project
+  repository / project folder to some other location on your computer,
+  or move this very Rmd file to another location within your project
+  repository / folder, and your code should still work.
+- **Reproducibility criteria**: You should be able to delete the csv
+  file, and remake it simply by knitting this Rmd file.
+
+<!-------------------------- Start your work below ---------------------------->
+
+``` r
+write_csv(as.data.frame(summary(apt_buildings)), here::here("output", "3.1.csv"))
+```
+
+<!----------------------------------------------------------------------------->
+
+## 3.2 (5 points)
+
+Write your model object from Task 3 to an R binary file (an RDS), and
+load it again. Be sure to save the binary file in your `output` folder.
+Use the functions `saveRDS()` and `readRDS()`.
+
+- The same robustness and reproducibility criteria as in 3.1 apply here.
+
+<!-------------------------- Start your work below ---------------------------->
+
+``` r
+# original model
+model
+```
+
+    ## 
+    ## Call:
+    ## lm(formula = coverage ~ I(year_built - 1950), data = apt_buildings_sprinkler)
+    ## 
+    ## Coefficients:
+    ##          (Intercept)  I(year_built - 1950)  
+    ##             0.328552              0.009175
+
+``` r
+# save model as RDS
+saveRDS(model, here::here("output", "3.2.model"))
+# load model from RDS
+loaded_model <- readRDS(here::here("output", "3.2.model"))
+# loaded model
+loaded_model
+```
+
+    ## 
+    ## Call:
+    ## lm(formula = coverage ~ I(year_built - 1950), data = apt_buildings_sprinkler)
+    ## 
+    ## Coefficients:
+    ##          (Intercept)  I(year_built - 1950)  
+    ##             0.328552              0.009175
+
+<!----------------------------------------------------------------------------->
+
+# Tidy Repository
+
+Now that this is your last milestone, your entire project repository
+should be organized. Here are the criteria we’re looking for.
+
+## Main README (3 points)
+
+There should be a file named `README.md` at the top level of your
+repository. Its contents should automatically appear when you visit the
+repository on GitHub.
+
+Minimum contents of the README file:
+
+- In a sentence or two, explains what this repository is, so that
+  future-you or someone else stumbling on your repository can be
+  oriented to the repository.
+- In a sentence or two (or more??), briefly explains how to engage with
+  the repository. You can assume the person reading knows the material
+  from STAT 545A. Basically, if a visitor to your repository wants to
+  explore your project, what should they know?
+
+Once you get in the habit of making README files, and seeing more README
+files in other projects, you’ll wonder how you ever got by without them!
+They are tremendously helpful.
+
+## File and Folder structure (3 points)
+
+You should have at least four folders in the top level of your
+repository: one for each milestone, and one output folder. If there are
+any other folders, these are explained in the main README.
+
+Each milestone document is contained in its respective folder, and
+nowhere else.
+
+Every level-1 folder (that is, the ones stored in the top level, like
+“Milestone1” and “output”) has a `README` file, explaining in a sentence
+or two what is in the folder, in plain language (it’s enough to say
+something like “This folder contains the source for Milestone 1”).
+
+## Output (2 points)
+
+All output is recent and relevant:
+
+- All Rmd files have been `knit`ted to their output, and all data files
+  saved from Task 4 above appear in the `output` folder.
+- All of these output files are up-to-date – that is, they haven’t
+  fallen behind after the source (Rmd) files have been updated.
+- There should be no relic output files. For example, if you were
+  knitting an Rmd to html, but then changed the output to be only a
+  markdown file, then the html file is a relic and should be deleted.
+
+Our recommendation: delete all output files, and re-knit each
+milestone’s Rmd file, so that everything is up to date and relevant.
+
+PS: there’s a way where you can run all project code using a single
+command, instead of clicking “knit” three times. More on this in STAT
+545B!
+
+## Error-free code (1 point)
+
+This Milestone 1 document knits error-free, and the Milestone 2 document
+knits error-free.
+
+## Tagged release (1 point)
+
+You’ve tagged a release for Milestone 1, and you’ve tagged a release for
+Milestone 2.
+
+### Attribution
+
+Thanks to Victor Yuan for mostly putting this together.
